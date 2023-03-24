@@ -1,21 +1,17 @@
-from flask import Flask, render_template
+from controllers import user_controller
+import db
+import os
+from flask import Flask
+from dotenv import load_dotenv
 
-from models.User import db
-from routes.user_bp import user_bp
+app = Flask(__name__, instance_relative_config=True)
+load_dotenv()
+app.config.from_object(os.environ['APP_SETTINGS'])
 
-app = Flask(__name__)
-app.config.from_object('config')
-
+# init db
 db.init_app(app)
 
-app.register_blueprint(user_bp, url_prefix='/users')
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
+app.register_blueprint(user_controller.user_bp)
 
 if __name__ == '__main__':
-    app.debug = True
     app.run()
