@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from rest_api.db import db
 
 
 class User(db.Model):
@@ -20,3 +18,7 @@ class User(db.Model):
             'state': self.state,
             'address': self.address
         }
+
+    @staticmethod
+    def get(user_id):
+        return User.query.get(user_id)
